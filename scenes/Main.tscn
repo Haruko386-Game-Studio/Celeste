@@ -1,0 +1,120 @@
+[gd_scene load_steps=10 format=3 uid="uid://celeste_proto_main"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/camera_followed.gd" id="2_camera"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(28, 36)
+
+[sub_resource type="Gradient" id="Gradient_bg"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.09, 0.11, 0.20, 1, 0.22, 0.18, 0.36, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+width = 960
+height = 540
+fill = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(900, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(220, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(40, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_spike"]
+size = Vector2(120, 24)
+
+[node name="Main" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(480, 270)
+texture = SubResource("GradientTexture2D_bg")
+centered = true
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(110, 350)
+script = ExtResource("1_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+modulate = Color(0.95, 0.25, 0.35, 1)
+scale = Vector2(28, 36)
+texture = SubResource("GradientTexture2D_bg")
+region_enabled = true
+region_rect = Rect2(0, 0, 1, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(480, 270)
+current = true
+zoom = Vector2(1, 1)
+script = ExtResource("2_camera")
+target_path = NodePath("../Player")
+limit_left = 0
+limit_top = 0
+limit_right = 1400
+limit_bottom = 620
+
+[node name="Level" type="Node2D" parent="."]
+
+[node name="Ground" type="StaticBody2D" parent="Level"]
+position = Vector2(450, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Ground"]
+modulate = Color(0.25, 0.27, 0.35, 1)
+scale = Vector2(900, 48)
+texture = SubResource("GradientTexture2D_bg")
+region_enabled = true
+region_rect = Rect2(0, 0, 1, 1)
+
+[node name="Platform1" type="StaticBody2D" parent="Level"]
+position = Vector2(420, 390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Platform1"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Platform1"]
+modulate = Color(0.35, 0.36, 0.45, 1)
+scale = Vector2(220, 32)
+texture = SubResource("GradientTexture2D_bg")
+region_enabled = true
+region_rect = Rect2(0, 0, 1, 1)
+
+[node name="Platform2" type="StaticBody2D" parent="Level"]
+position = Vector2(720, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Platform2"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Platform2"]
+modulate = Color(0.35, 0.36, 0.45, 1)
+scale = Vector2(220, 32)
+texture = SubResource("GradientTexture2D_bg")
+region_enabled = true
+region_rect = Rect2(0, 0, 1, 1)
+
+[node name="Wall" type="StaticBody2D" parent="Level"]
+position = Vector2(930, 390)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Wall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Wall"]
+modulate = Color(0.32, 0.34, 0.43, 1)
+scale = Vector2(40, 220)
+texture = SubResource("GradientTexture2D_bg")
+region_enabled = true
+region_rect = Rect2(0, 0, 1, 1)
+
+[node name="Hint" type="Label" parent="."]
+position = Vector2(24, 22)
+text = "A/D or ←/→: Move    Space/W: Jump    J/Shift: Dash"
+theme_override_font_sizes/font_size = 22
